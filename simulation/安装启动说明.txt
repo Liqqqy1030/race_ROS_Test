@@ -1,0 +1,59 @@
+适用环境：Ubuntu 18.04 + ROS Melodic
+
+这是最小仿真包，仅包含：
+- Gazebo 场地
+- 虚拟小车
+- 虚拟激光雷达 /scan
+- 虚拟摄像头 /camera/image
+- 速度控制 /cmd_vel
+- 里程计 /odom
+
+一、只安装仿真必需组件
+
+sudo apt update
+sudo apt install ros-melodic-desktop-full ros-melodic-gazebo-ros-pkgs ros-melodic-teleop-twist-keyboard
+
+二、放置源码
+
+将压缩包中的 src 放入：
+
+~/LLX3/src
+
+三、编译
+
+cd ~/LLX3
+catkin_make
+source ~/LLX3/devel/setup.bash
+
+四、启动仿真
+
+roslaunch abot_model gazebo_world.launch
+
+五、另开终端，键盘控制
+
+source ~/LLX3/devel/setup.bash
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
+六、检查数据
+
+rostopic hz /scan
+rostopic hz /odom
+rostopic list | grep camera
+
+此版本不包含 serial、语音、视觉识别、实体雷达和底盘驱动，不需要安装这些硬件依赖。
+
+七、一条指令启动自动巡航
+
+关闭旧进程后执行：
+
+pkill -f roslaunch
+pkill -f gzserver
+pkill -f gzclient
+sleep 3
+
+export GAZEBO_MODEL_DATABASE_URI=""
+export LIBGL_ALWAYS_SOFTWARE=1
+source ~/LLX3/devel/setup.bash
+roslaunch abot_patrol_sim patrol.launch
+
+停止巡航：在启动终端按 Ctrl+C。

@@ -1,0 +1,17 @@
+<launch>
+  <arg name="gui" default="true"/>
+  <arg name="start_gazebo" default="true"/>
+  <arg name="side_length" default="1.5"/>
+  <arg name="linear_speed" default="0.28"/>
+  <arg name="angular_speed" default="0.70"/>
+
+  <include if="$(arg start_gazebo)" file="$(find abot_model)/launch/gazebo_world.launch">
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <node pkg="abot_patrol_sim" type="patrol.py" name="abot_patrol" output="screen">
+    <param name="side_length" value="$(arg side_length)"/>
+    <param name="max_linear_speed" value="$(arg linear_speed)"/>
+    <param name="max_angular_speed" value="$(arg angular_speed)"/>
+  </node>
+</launch>

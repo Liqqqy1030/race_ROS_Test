@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>abot_patrol_sim</name>
+  <version>1.0.0</version>
+  <description>Minimal odometry based patrol controller for the ABot Gazebo model.</description>
+  <maintainer email="abot@example.com">abot</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <exec_depend>abot_model</exec_depend>
+</package>
