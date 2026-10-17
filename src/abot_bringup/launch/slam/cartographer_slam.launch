@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find abot_bringup)/launch/rplidar.launch" />
+  <include file="$(find abot_bringup)/launch/include/cartographer/cartographer_2d.launch" />
+</launch>

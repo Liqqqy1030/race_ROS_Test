@@ -1,0 +1,47 @@
+<launch>
+  <arg name="map_file" default="$(find robot_slam)/maps/my_lab.yaml"/>
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+  <arg name="video_device" default="/dev/video0"/>
+  <arg name="camera_pixel_format" default="yuyv"/>
+  <arg name="base_port" default="/dev/abotbase"/>
+  <arg name="lidar_port" default="/dev/rplidar"/>
+  <arg name="enable_vision" default="true"/>
+  <arg name="require_vision_ready" default="true"/>
+  <arg name="ai_python" default="$(optenv AI_PYTHON python3)"/>
+  <arg name="ros_python" default="$(optenv ROS_PYTHON python)"/>
+  <param name="use_sim_time" value="false"/>
+  <include file="$(find abot_bringup)/launch/robot_with_imu.launch">
+    <arg name="base_port" value="$(arg base_port)"/>
+  </include>
+  <include file="$(find abot_bringup)/launch/rplidar.launch">
+    <arg name="serial_port" value="$(arg lidar_port)"/>
+  </include>
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)" required="true"/>
+  <include file="$(find abot_bringup)/launch/amcl.launch">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+  <include file="$(find abot_bringup)/launch/move_base.launch"/>
+  <node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen" required="true">
+    <param name="video_device" value="$(arg video_device)"/>
+    <param name="image_width" value="640"/>
+    <param name="image_height" value="480"/>
+    <param name="pixel_format" value="$(arg camera_pixel_format)"/>
+    <param name="camera_frame_id" value="usb_cam"/>
+    <param name="io_method" value="mmap"/>
+  </node>
+  <group if="$(arg enable_vision)">
+    <include file="$(find competition_ai)/launch/ai_stack.launch">
+      <arg name="ai_python" value="$(arg ai_python)"/>
+      <arg name="ros_python" value="$(arg ros_python)"/>
+    </include>
+  </group>
+  <node pkg="robot_slam" type="patrol_controller.py" name="patrol_controller"
+        launch-prefix="$(arg ros_python)" output="screen" required="true">
+    <rosparam command="load" file="$(find robot_slam)/config/patrol.yaml"/>
+    <param name="require_vision_ready" value="$(arg require_vision_ready)"/>
+  </node>
+</launch>

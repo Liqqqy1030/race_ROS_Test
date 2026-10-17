@@ -1,0 +1,5 @@
+<launch>
+ <include file="$(find abot_bringup)/launch/lidar/$(env ABOTLIDAR).launch" />
+ <include file="$(find abot_bringup)/param/navigation/slam_gmapping.xml" />
+ <include file="$(find abot_bringup)/launch/move_base.launch" />
+</launch>

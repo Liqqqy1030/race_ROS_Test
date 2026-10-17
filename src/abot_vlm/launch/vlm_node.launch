@@ -1,0 +1,8 @@
+<launch>
+    <!-- 视觉识别节点（VLM），固定节点名，加载 vision.yaml 参数 -->
+    <node name="top_view_shot_node" pkg="abot_vlm" type="vlm_node.py" output="screen">
+        <rosparam command="load" file="$(find abot_vlm)/config/vision.yaml" />
+        <!-- 旧兼容触发参数：置 1 拍照识别一次，节点内自动重置为 255 -->
+        <param name="im_flag" type="int" value="255" />
+    </node>
+</launch>

@@ -1,0 +1,18 @@
+<launch>
+  <include file="$(find rslidar_sdk)/launch/start.launch"/>
+  <node pkg="rslidar_laserscan" name="rslidar_laserscan_node" type="rslidar_laserscan_node" output="screen">
+    <param name="model" value="RS16"/>
+    <param name="sub_topic" value="/rslidar_points" />
+    <!-- the ring start from 1 -->
+    <param name="ring" value="8" />  
+    <remap from="/scan" to="/scan_raw"/>
+  </node>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0.1 0 0.35 0 0 0  /base_link /rslidar"/>
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="log" name="laser_filter">
+        <rosparam command="load" file="$(find rikibot)/param/lidar/$(env ABOTMODEL)_laserfilter.yaml"/>
+        <remap from="/scan" to="/scan_raw"/>
+        <remap from="/scan_filtered" to="/scan"/>
+   </node>
+
+</launch>

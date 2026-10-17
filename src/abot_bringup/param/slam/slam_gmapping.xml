@@ -1,0 +1,64 @@
+<launch>
+  <arg name="base_frame"  default="base_link"/>
+  <arg name="odom_frame"  default="odom"/>
+  <arg name="map_frame"  default="map"/>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <!-- 坐标系 -->
+    <param name="base_frame" value="$(arg base_frame)" />
+    <param name="odom_frame" value="$(arg odom_frame)" />
+    <param name="map_frame" value="$(arg map_frame)" />
+
+    <!-- 地图更新 -->
+    <param name="map_update_interval" value="15.0"/>
+
+    <!-- 激光参数 -->
+    <param name="maxUrange" value="10.0"/>          <!-- 有效最大距离 -->
+    <param name="maxRange" value="10.0"/>            <!-- 新增：保证与 maxUrange 一致 -->
+    <param name="minRange" value="-0.5"/>            <!-- 忽略近距离读数，避免车体反射 -->
+
+    <!-- 扫描匹配（提高精度） -->
+    <param name="sigma" value="0.03"/>               <!-- 降低，使匹配更确定 -->
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.075"/>
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+    <param name="minimumScore" value="50"/>           <!-- 降低，避免因暂时低分而丢弃正确粒子 -->
+
+    <!-- 里程计噪声模型（假设你的里程计较准确） -->
+    <param name="srr" value="0.005"/>                 <!-- 平移时平移噪声 -->
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.005"/>                 <!-- 旋转时平移噪声 -->
+    <param name="stt" value="0.02"/>
+
+    <!-- 更新触发（更频繁，减少累计误差） -->
+    <param name="linearUpdate" value="0.3"/>          <!-- 每 0.3m 更新 -->
+    <param name="angularUpdate" value="0.3"/>         <!-- 每 0.3rad 更新 -->
+    <param name="temporalUpdate" value="-0.5"/>
+
+    <!-- 重采样 -->
+    <param name="resampleThreshold" value="0.5"/>
+
+    <!-- 粒子数（适当增加，提升鲁棒性） -->
+    <param name="particles" value="80"/>               <!-- 原 50，建议 80~100 -->
+
+    <!-- 地图尺寸（动态扩展，避免边界限制） -->
+    <param name="xmin" value="-50.0"/>
+    <param name="ymin" value="-50.0"/>
+    <param name="xmax" value="50.0"/>
+    <param name="ymax" value="50.0"/>
+    <param name="delta" value="0.05"/>
+
+    <!-- 概率似然计算（保持默认） -->
+    <param name="llsamplerange" value="0.01"/>
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+
+    <!-- TF 发布周期 -->
+    <param name="transform_publish_period" value="0.05"/>  <!-- 更频繁的 TF 更新 -->
+  </node>
+</launch>

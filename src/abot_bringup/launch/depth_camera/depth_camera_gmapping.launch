@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find abot_bringup)/launch/depth_camera/depth_camera_laser.launch"/> 
+  <include file="$(find abot_bringup)/param/slam/slam_gmapping.xml"/> 
+</launch>

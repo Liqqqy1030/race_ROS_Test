@@ -1,0 +1,7 @@
+<launch>
+ <include file="$(find abot_bringup)/launch/lidar/$(env ABOTLIDAR).launch" />
+  <include file="$(find abot_bringup)/param/slam/slam_gmapping.xml" />
+  <include file="$(find explore_lite)/launch/explore.launch" />
+  <include file="$(find abot_bringup)/launch/move_base.launch" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find abot_bringup)/rviz/slam.rviz" required="true" />
+</launch>

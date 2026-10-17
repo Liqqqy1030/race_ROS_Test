@@ -1,0 +1,9 @@
+<!--
+  Used for visualising rplidar in action.
+
+  It requires rplidar.launch.
+ -->
+<launch>
+  <include file="$(find abot_bringup)/launch/lidar/$(env ABOTLIDAR).launch" />
+  <include file="$(find abot_bringup)/launch/slam/hectormapping.launch" />
+</launch>

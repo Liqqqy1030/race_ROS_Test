@@ -1,0 +1,14 @@
+obstacle_range: 3.0
+raytrace_range: 3.5
+footprint: [[-0.24, -0.24], [-0.24, 0.24], [0.24, 0.24], [0.24, -0.24]]
+inflation_radius: 0.25
+cost_scaling_factor: 3.0
+
+observation_sources: scan
+scan:
+  data_type: LaserScan
+  topic: scan
+  marking: true
+  clearing: true
+
+map_type: costmap

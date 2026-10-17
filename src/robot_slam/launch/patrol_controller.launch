@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="robot_slam" type="patrol_controller.py" name="patrol_controller" output="screen" required="true">
+    <rosparam command="load" file="$(find robot_slam)/config/patrol.yaml"/>
+  </node>
+</launch>

@@ -1,0 +1,21 @@
+<launch>
+  <arg name="ai_python" default="$(optenv AI_PYTHON python3)"/>
+  <arg name="ros_python" default="$(optenv ROS_PYTHON python)"/>
+  <arg name="backend_url" default="http://127.0.0.1:18080"/>
+  <arg name="image_topic" default="/usb_cam/image_raw"/>
+  <arg name="red_rate" default="2.0"/>
+  <arg name="snowboy_root" default="$(find robot_slam)"/>
+
+  <node pkg="competition_ai" type="ai_backend.py" name="competition_ai_backend"
+        launch-prefix="env -u PYTHONPATH -u PYTHONHOME $(arg ai_python)"
+        output="screen" required="true">
+    <env name="SNOWBOY_ROOT" value="$(arg snowboy_root)"/>
+  </node>
+
+  <node pkg="competition_ai" type="ros_ai_bridge.py" name="competition_ai_bridge"
+        launch-prefix="$(arg ros_python)" output="screen" required="true">
+    <param name="backend_url" value="$(arg backend_url)"/>
+    <param name="image_topic" value="$(arg image_topic)"/>
+    <param name="red_rate" value="$(arg red_rate)"/>
+  </node>
+</launch>

@@ -1,0 +1,9 @@
+<launch>
+  <!-- 相机由总 launch 统一启动一次，这里不再 include usb_cam -->
+  <node name="fire_detector" type="fire_detector.py" pkg="color_pkg" output="screen">
+    <param name="image_topic" type="str" value="/usb_cam/image_raw"/>
+    <param name="min_area" type="double" value="500"/>
+    <param name="confirm_frames" type="int" value="3"/>
+    <param name="clear_frames" type="int" value="5"/>
+  </node>
+</launch>

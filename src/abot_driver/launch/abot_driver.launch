@@ -1,0 +1,11 @@
+<launch>
+  <arg name="port" default="/dev/abotbase" />
+  <node pkg="abot_driver" type="abot_driver" name="abot_driver_bsp" output="screen">
+    <param name="port_name" value="$(arg port)" />
+    <param name="baud_rate" value="115200" />
+    <param name="odom_frame" value="odom" />
+    <param name="base_frame" value="base_link" />
+    <param name="imu_frame" value="imu_link" />
+    <param name="publish_tf" value="false" />
+  </node>
+</launch>

@@ -1,0 +1,11 @@
+<launch>
+  <!-- 启动雷达 -->
+  <include file="$(find abot_bringup)/launch/rplidar.launch" />
+
+  <!-- 启动 Cartographer 2D -->
+  <include file="$(find abot_bringup)/launch/include/cartographer/cartographer_2d.launch" />
+
+  <!-- 自动启动 RViz 并加载指定配置文件 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find abot_bringup)/rviz/cartographer.rviz" output="screen" />
+
+</launch>

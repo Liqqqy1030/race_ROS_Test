@@ -1,0 +1,10 @@
+<launch>
+  <arg name="legacy_topic" default="" />
+  <arg name="timeout" default="15.0" />
+  <arg name="player" default="mplayer" />
+  <node pkg="TTS_audio" type="TTS.py" name="tts_server" output="screen" required="true">
+    <param name="legacy_topic" value="$(arg legacy_topic)" />
+    <param name="timeout" value="$(arg timeout)" />
+    <param name="player" value="$(arg player)" />
+  </node>
+</launch>

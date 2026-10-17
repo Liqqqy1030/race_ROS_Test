@@ -1,0 +1,16 @@
+<launch>
+  <arg name="camera_type" value="$(env CAMERA)"/>
+  <arg if="$(eval arg('camera_type') == 'astra')" name="input_image"        default="/camera/rgb/image_raw"/>
+  <arg if="$(eval arg('camera_type') == 'astrapro')" name="input_image"        default="/camera/rgb/image_raw"/>
+  <arg if="$(eval arg('camera_type') == 'usb')" name="input_image"        default="/camera/rgb/image_raw"/>
+  <arg if="$(eval arg('camera_type') == 'csi')" name="input_image"        default="/camera/rgb/image_raw"/>
+  <arg if="$(eval arg('camera_type') == 'intel')" name="input_image"      default="/camera/color/image_raw"/>
+
+  <node name="abot_hsv_detect" pkg="abot_object_detect" type="abot_hsv_detect.py" output="screen" >
+      <param name="camera_topic" value="$(arg input_image)" type="string" />
+      <param name="real_area" value="500"/>
+      <rosparam param="color1">[27, 181, 213, 63, 255, 255, 'yellow']</rosparam>
+      <rosparam param="color2">[0, 112, 41, 15, 255, 255, 'red']</rosparam>
+      <rosparam param="color3">[35, 78, 171, 65, 255, 255, 'green']</rosparam>
+  </node>
+</launch>

@@ -1,0 +1,11 @@
+<launch>
+    <!-- 航点顺序：5 → 45 → 77 → 37 → 九宫格 9 点 → 终点 9，共 14 个航点
+         四个边缘点位车头正对墙面读题，后面点位朝向不做要求
+         X：向下（行方向，m），Y：向右（列方向，m），yaw 逆时针为正
+    -->
+    <node name="multi_goal" pkg="robot_slam" type="navigation_multi_goals_4.py" output="screen">
+        <param name="goalListX"  value="0.00, 1.60, 3.20, 1.60, 1.20, 1.20, 1.20, 1.60, 1.60, 1.60, 2.00, 2.00, 2.00, 0.00"/>
+        <param name="goalListY"  value="1.60, 3.20, 2.80, 0.00, 1.20, 1.60, 2.00, 1.20, 1.60, 2.00, 1.20, 1.60, 2.00, 3.20"/>
+        <param name="goalListYaw" value="90, 0, -90, 180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0"/>
+    </node>
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+  <param name="/use_sim_time" value="false"/>
+
+  <include file="$(find abot_bringup)/launch/rplidar.launch" />
+  <include file="$(find abot_bringup)/launch/move_base.launch" />
+
+  <arg name="map_file" default="$(find robot_slam)/maps/my_lab.yaml"/>
+  <node pkg="map_server" name="map_server"  type="map_server" args="$(arg map_file)" />
+
+  <!-- AMCL -->
+  <include file="$(find abot_bringup)/launch/amcl.launch"/>
+  <!--node name="multi_mark" pkg="abot_bringup" type="show_mark.py" output="screen" /-->
+</launch>

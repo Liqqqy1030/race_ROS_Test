@@ -1,0 +1,18 @@
+<launch>
+  <param name="/use_sim_time" value="true" />
+  <param name="robot_description" textfile="$(find abot_bringup)/urdf/abot_x4.urdf" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find abot_bringup)/launch/include/cartographer
+          -configuration_basename $(env ABOTLIDAR)_3dto2dlds.lua"
+      output="screen">
+    <remap from="/odom" to="/odom" />
+    <remap from="/points2" to="/rslidar_points" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+</launch>

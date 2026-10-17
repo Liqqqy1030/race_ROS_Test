@@ -1,0 +1,19 @@
+<launch>
+  <arg name="nav_type" value="dwa"/>
+  <arg name="model_type" value="omni"/>
+  <arg name="car_type" value="x4"/>
+  <arg if="$(eval arg('nav_type') == 'dwa')" name="path_planner"   default="dwa_local_planner/DWAPlannerROS"/>
+  <arg if="$(eval arg('nav_type') == 'teb')" name="path_planner"   default="teb_local_planner/TebLocalPlannerROS"/>
+
+  <!--  ************** Navigation ***************  -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="$(arg path_planner)" />
+      <rosparam file="$(find abot_bringup)/param/navigation/common/costmap_$(arg car_type)_params.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find abot_bringup)/param/navigation/common/costmap_$(arg car_type)_params.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find abot_bringup)/param/navigation/common/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find abot_bringup)/param/navigation/common/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find abot_bringup)/param/navigation/common/move_base_params.yaml" command="load" />
+      <rosparam file="$(find abot_bringup)/param/navigation/$(arg nav_type)/$(arg nav_type)_$(arg model_type)_planner_params.yaml" command="load" />
+  </node>
+
+</launch>

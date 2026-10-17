@@ -1,0 +1,38 @@
+<launch>
+   <arg name="camera_type" value="$(env CAMERA)"/>
+   <arg if="$(eval arg('camera_type') == 'astra')" name="camera_info"      default="/camera/depth/camera_info"/>
+   <arg if="$(eval arg('camera_type') == 'astrapro')" name="camera_info"   default="/camera/depth/camera_info"/>
+   <arg if="$(eval arg('camera_type') == 'intel')" name="camera_info"      default="/camera/depth/camera_info"/>
+
+   <arg if="$(eval arg('camera_type') == 'astra')" name="input_depth"      default="/camera/depth/image_raw"/>
+   <arg if="$(eval arg('camera_type') == 'astrapro')" name="input_depth"   default="/camera/depth/image_raw"/>
+   <arg if="$(eval arg('camera_type') == 'intel')" name="input_depth"      default="/camera/depth/image_rect_raw"/>
+
+   <group if="$(eval arg('camera_type') == 'astrapro')">
+       <include file="$(find astra_launch)/launch/astrapro.launch"/>
+   </group>
+
+   <group if="$(eval arg('camera_type') == 'astra')">
+       <include file="$(find astra_launch)/launch/astra.launch"/>
+   </group>
+
+   <group if="$(eval arg('camera_type') == 'intel')">
+      <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+   </group>
+
+   <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0 0.0 0 0 0 /base_link /scan"/>
+ 
+   <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+	<remap from="image" to="$(arg input_depth)" />
+	<remap from="camera_info" to="$(arg camera_info)" />
+	<!--remap from="scan" to="/scan" /-->
+	<!--param name="scan_height" value="1"/-->
+	<param name="scan_time" value="0.05"/>
+	<param name="range_min" value="0.05"/>
+	<param name="range_max" value="5.0"/>
+	<!--param name="output_frame_id" value="laser" /-->
+	<param name="output_frame_id" value="scan" />
+
+   </node>
+
+</launch>
